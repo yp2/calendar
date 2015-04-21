@@ -1,4 +1,29 @@
 <template name="home">
-    home
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <button type="button" class="btn btn-primary btn-block calNavPrev"><i class="fa fa-chevron-left"></i> {{calNavPrev}}</button>
+            </div>
+            <div class="col-md-6 text-center">
+                <button type="button" class="btn btn-success btn-block calNavCurrent">Na dzień: {{calNavCurrent}}</button>
+                <button type="button" id="cal" class="btn btn-success btn-block">cal</button>
+            </div>
+            <div class="col-md-3 text-center">
+                <button type="button" class="btn btn-primary btn-block calNavNext">{{calNavNext}} <i class="fa fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-8">
+                <div class="well well-lg"></div>
+
+            </div>
+            <div class="col-md-4">
+                <div class="well well-lg"></div>
+
+            </div>
+        </div>
+
+    </div>
 
 </template>

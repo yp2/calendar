@@ -1,3 +1,7 @@
-/**
- * Created by daniel on 31.03.15.
- */
+Template.layout.helpers({
+    today: function (){
+        return moment().format("dddd, D MMMM YYYY");
+    }
+
+
+});

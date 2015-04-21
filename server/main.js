@@ -9,7 +9,7 @@ Meteor.startup(function () {
     if (!Meteor.users.findOne({username: 'root'})) {
         var userId = Accounts.createUser({
             username: 'root',
-            password: 'root'
+            password: '11111111'
         });
     }
 
