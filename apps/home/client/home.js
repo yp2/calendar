@@ -65,12 +65,12 @@ Template.home.events({
         var date = currentDate.add(1, 'days');
         Session.set('dateShow', date.toISOString());
     },
-    'blur #dateFrom': function (e, t){
-        //console.log(e, t);
-        var min = t.$("#dateFrom").val();
-        min = moment(min, "dddd, D MMMM YYYY");
-        //console.log(t.$('#pickerTimeFrom').data('DateTimePicker').minDate())
-
-
-    }
+    //'blur #dateFrom': function (e, t){
+    //    //console.log(e, t);
+    //    var min = t.$("#dateFrom").val();
+    //    min = moment(min, "dddd, D MMMM YYYY");
+    //    //console.log(t.$('#pickerTimeFrom').data('DateTimePicker').minDate())
+    //
+    //
+    //}
 });
