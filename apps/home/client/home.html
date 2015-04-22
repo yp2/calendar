@@ -6,8 +6,13 @@
                         class="fa fa-chevron-left"></i> {{calNavPrev}}</button>
             </div>
             <div class="col-md-6 text-center">
-                <button type="button" class="btn btn-success btn-block calNavCurrent">Na
-                    dzień: {{calNavCurrent}}</button>
+                <button type="button" class="btn btn-success btn-block calNavCurrent">
+                    {{# if checkToday calNavCurrent }}
+                        Dziś:
+                    {{else}}
+                        Na dzień:
+                    {{/if}}
+                        {{calNavCurrent}}</button>
             </div>
             <div class="col-md-3 text-center">
                 <button type="button" class="btn btn-primary btn-block calNavNext">{{calNavNext}}

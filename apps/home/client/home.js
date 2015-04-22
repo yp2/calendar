@@ -16,6 +16,11 @@ Template.home.helpers({
     calNavNext: function () {
         var date = moment(Session.get('dateShow'));
         return date.add(1, 'days').format("dddd, D MMMM YYYY")
+    },
+    checkToday: function (date) {
+        var today = moment().format('dddd, D MMMM YYYY');
+        date = moment(date, 'dddd, D MMMM YYYY').format('dddd, D MMMM YYYY');
+        return today === date
     }
 });
 
@@ -65,6 +70,10 @@ Template.home.events({
         var date = currentDate.add(1, 'days');
         Session.set('dateShow', date.toISOString());
     },
+    "click .calNavCurrent" : function (e) {
+        e.preventDefault();
+        Session.set('dateShow', moment().toISOString())
+    }
     //'blur #dateFrom': function (e, t){
     //    //console.log(e, t);
     //    var min = t.$("#dateFrom").val();
