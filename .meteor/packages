@@ -12,24 +12,25 @@ accounts-password
 # accounts-ui
 aldeed:collection2
 iron:router
-raix:handlebar-helpers
+# raix:handlebar-helpers
 
-audit-argument-checks
-fastclick
-zimme:iron-router-active
-manuelschoebel:ms-seo
-#useraccounts:semantic-ui
-#useraccounts:bootstrap
-natestrauser:animate-css
-dburles:collection-helpers
-meteorhacks:fast-render
+# audit-argument-checks
+# fastclick
+# zimme:iron-router-active
+# manuelschoebel:ms-seo
+# useraccounts:semantic-ui
+# useraccounts:bootstrap
+# natestrauser:animate-css
+# dburles:collection-helpers
+# meteorhacks:fast-render
 
-semantic:ui-css
+# semantic:ui-css
 ian:accounts-ui-bootstrap-3
 anti:i18n
-stylus
+# stylus
 fortawesome:fontawesome
 momentjs:moment
-stevezhu:lodash
+# stevezhu:lodash
 twbs:bootstrap
-rajit:bootstrap3-datepicker
+tsega:bootstrap3-datetimepicker
+# rajit:bootstrap3-datepicker
