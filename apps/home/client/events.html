@@ -1,0 +1,10 @@
+<template name="eventsPlaned">
+  <li class="list-group-item eventsItem" draggable="true">
+      <strong>{{event.name}}</strong>
+      <span class="pull-right"><a href="" id="{{makeId "showMore"}}"><i class="fa fa-angle-down fa-3x"></i></a></span>
+      <p>Godzina: {{event.time}}:00 </p>
+      <div id="{{makeId "more"}}">
+        <p>More</p>
+      </div>
+  </li>
+</template>

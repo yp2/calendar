@@ -1,30 +1,30 @@
 if (! Session.get('showDate')){
     var today = moment();
-    Session.set('showDate', today.toISOString())
+    console.log(today.format(CONF.dsFormat));
+    Session.set('showDate', today.format(CONF.dsFormat))
 }
 
 Template.home.onCreated(function () {
     var self = this;
 
     self.autorun(function () {
-        var showDate = Session.get('showDate');
-        self.subscribe("Events", {date: showDate ? showDate : moment().toISOString()})
+        self.subscribe("Events")
     });
 
 });
 
 Template.home.helpers({
     calNavCurrent: function () {
-        var date = moment(Session.get('dateShow'));
+        var date = moment(Session.get('showDate'), CONF.dsFormat);
         //console.log(moment().calendar(date));
         return date.format(CONF.dFormat);
     },
     calNavPrev: function () {
-        var date = moment(Session.get('dateShow'));
+        var date = moment(Session.get('showDate'), CONF.dsFormat);
         return date.subtract(1, 'days').format(CONF.dFormat)
     },
     calNavNext: function () {
-        var date = moment(Session.get('dateShow'));
+        var date = moment(Session.get('showDate'), CONF.dsFormat);
         return date.add(1, 'days').format(CONF.dFormat)
     },
     checkToday: function (date) {
@@ -34,7 +34,11 @@ Template.home.helpers({
     },
     eventsForDay : function () {
         var day = Session.get('showDate');
-        return Events.find({date: day})
+        return Events.find({date: day}, {sort: {time: 1}})
+    },
+    eventsWoDay : function () {
+        //console.log(Events.find({date: null}).fetch());
+        return Events.find({date: null}, {sort: {time: 1}})
     }
 });
 
@@ -77,7 +81,7 @@ Template.home.onRendered(function(){
 
     calNavPicker.on("changeDate", function(e){
         var selectedDate = moment(e.date);
-        Session.set('dateShow', selectedDate.toISOString());
+        Session.set('showDate', selectedDate.format(CONF.dsFormat));
         $(".calNavPicker").datepicker("hide");
     })
 });
@@ -85,19 +89,19 @@ Template.home.onRendered(function(){
 Template.home.events({
     'click .calNavPrev' : function (e){
         e.preventDefault();
-        var currentDate = moment(Session.get('dateShow'));
+        var currentDate = moment(Session.get('showDate'), CONF.dsFormat);
         var date = currentDate.subtract(1, 'days');
-        Session.set('dateShow', date.toISOString());
+        Session.set('showDate', date.format(CONF.dsFormat));
     },
     'click .calNavNext' : function (e){
         e.preventDefault();
-        var currentDate = moment(Session.get('dateShow'));
+        var currentDate = moment(Session.get('showDate'), CONF.dsFormat);
         var date = currentDate.add(1, 'days');
-        Session.set('dateShow', date.toISOString());
+        Session.set('showDate', date.format(CONF.dsFormat));
     },
     "click .calNavCurrent" : function (e) {
         e.preventDefault();
-        Session.set('dateShow', moment().toISOString())
+        Session.set('showDate', moment().format(CONF.dsFormat))
     },
     "click #createEvent" : function (e, t){
         e.preventDefault();
@@ -108,6 +112,11 @@ Template.home.events({
             time: parseTime(t.$("#timeFrom").val()),
             user: {_id: Meteor.userId()}
         };
-        Events.insert(formData);
+        var eventId = Events.insert(formData);
+        if (eventId) {
+            Alerts.add("Zadanie zostało dodane", "success", {})
+        } else {
+            Alerts.add("Zadanie nie zostało dodane", "danger")
+        }
     }
 });

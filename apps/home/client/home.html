@@ -1,103 +1,107 @@
 <template name="home">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3 text-center">
-                <button type="button" class="btn btn-primary btn-block calNavPrev"><i
-                        class="fa fa-chevron-left"></i> {{calNavPrev}}</button>
-            </div>
-            <div class="col-md-6 text-center">
-                <div class="btn-toolbar btn-block" role="group" aria-label="today-group">
+    <div class="row">
+        <div class="col-md-3 text-center">
+            <button type="button" class="btn btn-primary btn-block calNavPrev"><i
+                    class="fa fa-chevron-left"></i> {{calNavPrev}}</button>
+        </div>
+        <div class="col-md-6 text-center">
+            <div class="btn-toolbar btn-block" role="group" aria-label="today-group">
 
-                    <button type="button" class="btn btn-success calNavCurrent">
-                        {{# if checkToday calNavCurrent }}
-                            Dziś:
-                        {{else}}
-                            Na dzień:
-                        {{/if}}
-                        {{calNavCurrent}}
-                    </button>
-                    <button type="button" class="btn btn-success calNavPicker">
-                        <i class="fa fa-calendar "></i>
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-3 text-center">
-                <button type="button" class="btn btn-primary btn-block calNavNext">{{calNavNext}}
-                    <i class="fa fa-chevron-right"></i></button>
+                <button type="button" class="btn btn-success calNavCurrent">
+                    {{# if checkToday calNavCurrent }}
+                        Dziś:
+                    {{else}}
+                        Na dzień:
+                    {{/if}}
+                    {{calNavCurrent}}
+                </button>
+                <button type="button" class="btn btn-success calNavPicker">
+                    <i class="fa fa-calendar "></i>
+                </button>
             </div>
         </div>
-        <br/>
+        <div class="col-md-3 text-center">
+            <button type="button" class="btn btn-primary btn-block calNavNext">{{calNavNext}}
+                <i class="fa fa-chevron-right"></i></button>
+        </div>
+    </div>
+    <br/>
 
-        <div class="row">
-            <div class="col-md-9">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="well well-lg">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="well well-lg">
                         {{# each eventsForDay }}
                             {{ name }}
                         {{/ each }}
-                        </div>
-
                     </div>
-                    <div class="col-md-4">
-                        <div class="well well-lg">
 
-                        </div>
-
-                    </div>
                 </div>
+                <div class="col-md-5">
+                    <div class="well well-lg">
+                        <div class="list-group">
+                            {{# each eventsWoDay }}
+                                {{> eventsPlaned event=this }}
+                            {{/ each}}
+                        </div>
+                    </div>
 
-
+                </div>
             </div>
-            <div class="col-md-3">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <!--<h4>Dodaj nowe zadanie</h4>-->
-                        <!--<hr/>-->
-                        <form role="form">
 
-                            <div class="form-group">
-                                <label for="name">Nazwa</label>
-                                <input required="" type="text" class="form-control" name="name" id="name"
-                                       placeholder="Nazwa">
-                            </div>
-                            <div class="form-group">
-                                <label for="dateFrom">Data od</label>
 
-                                <div class='input-group date' id='pickerDateFrom'>
-                                    <input type='text' class="form-control" id="dateFrom"
-                                           placeholder="Data od"/>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <!--<h4>Dodaj nowe zadanie</h4>-->
+                    <!--<hr/>-->
+                    <form role="form">
+
+                        <div class="form-group">
+                            <label for="name">Nazwa</label>
+                            <input required="" type="text" class="form-control" name="name"
+                                   id="name"
+                                   placeholder="Nazwa">
+                        </div>
+                        <div class="form-group">
+                            <label for="dateFrom">Data od</label>
+
+                            <div class='input-group date' id='pickerDateFrom'>
+                                <input type='text' class="form-control" id="dateFrom"
+                                       placeholder="Data od"/>
                                         <span class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </span>
-                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="timeFrom">Czas od</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="timeFrom">Czas od</label>
 
-                                <div class='input-group date' id='pickerTimeFrom'>
-                                    <input required="" type='text' class="form-control" id="timeFrom"
-                                           placeholder="Czas od"/>
+                            <div class='input-group date' id='pickerTimeFrom'>
+                                <input required="" type='text' class="form-control" id="timeFrom"
+                                       placeholder="Czas od"/>
                                         <span class="input-group-addon">
                                             <i class="fa fa-clock-o"></i>
                                         </span>
-                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="duration">Czas trwania</label>
-                                <select name="duration" id="duration" class="form-control">
-                                    <option value=""> -- Select One --</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="type">Typ</label>
-                                <select name="type" id="type" class="form-control">
-                                    <option value=""> -- Select One --</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary" id="createEvent">Utwórz</button>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="duration">Czas trwania</label>
+                            <select name="duration" id="duration" class="form-control">
+                                <option value=""> -- Select One --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Typ</label>
+                            <select name="type" id="type" class="form-control">
+                                <option value=""> -- Select One --</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="createEvent">Utwórz
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
