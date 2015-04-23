@@ -3,24 +3,38 @@ if (! Session.get('showDate')){
     Session.set('showDate', today.toISOString())
 }
 
+Template.home.onCreated(function () {
+    var self = this;
+
+    self.autorun(function () {
+        var showDate = Session.get('showDate');
+        self.subscribe("Events", {date: showDate ? showDate : moment().toISOString()})
+    });
+
+});
+
 Template.home.helpers({
     calNavCurrent: function () {
         var date = moment(Session.get('dateShow'));
         //console.log(moment().calendar(date));
-        return date.format("dddd, D MMMM YYYY");
+        return date.format(CONF.dFormat);
     },
     calNavPrev: function () {
         var date = moment(Session.get('dateShow'));
-        return date.subtract(1, 'days').format("dddd, D MMMM YYYY")
+        return date.subtract(1, 'days').format(CONF.dFormat)
     },
     calNavNext: function () {
         var date = moment(Session.get('dateShow'));
-        return date.add(1, 'days').format("dddd, D MMMM YYYY")
+        return date.add(1, 'days').format(CONF.dFormat)
     },
     checkToday: function (date) {
-        var today = moment().format('dddd, D MMMM YYYY');
-        date = moment(date, 'dddd, D MMMM YYYY').format('dddd, D MMMM YYYY');
+        var today = moment().format(CONF.dFormat);
+        date = moment(date, CONF.dFormat).format(CONF.dFormat);
         return today === date
+    },
+    eventsForDay : function () {
+        var day = Session.get('showDate');
+        return Events.find({date: day})
     }
 });
 
@@ -28,12 +42,12 @@ Template.home.onRendered(function(){
     var today = moment();
     this.$('#pickerDateFrom').datetimepicker({
         locale:"pl",
-        format: "dddd, D MMMM YYYY",
+        format: CONF.dFormat,
         minDate: today
     });
     this.$('#pickerTimeFrom').datetimepicker({
         locale:"pl",
-        format: "HH:00",
+        format: CONF.tFormat,
         minDate: today,
         maxDate: moment({hour: 23, minute: 59})
     });
@@ -54,6 +68,17 @@ Template.home.onRendered(function(){
                     pickerTimeFrom.data("DateTimePicker").date(moment());
             }
         }
+    });
+
+    var calNavPicker = this.$(".calNavPicker").datepicker({
+        language: "pl",
+        todayHighlight: true
+    });
+
+    calNavPicker.on("changeDate", function(e){
+        var selectedDate = moment(e.date);
+        Session.set('dateShow', selectedDate.toISOString());
+        $(".calNavPicker").datepicker("hide");
     })
 });
 
@@ -73,13 +98,16 @@ Template.home.events({
     "click .calNavCurrent" : function (e) {
         e.preventDefault();
         Session.set('dateShow', moment().toISOString())
+    },
+    "click #createEvent" : function (e, t){
+        e.preventDefault();
+        // form data
+        var formData = {
+            name: t.$("#name").val(),
+            date: parseDate(t.$("#dateFrom").val()),
+            time: parseTime(t.$("#timeFrom").val()),
+            user: {_id: Meteor.userId()}
+        };
+        Events.insert(formData);
     }
-    //'blur #dateFrom': function (e, t){
-    //    //console.log(e, t);
-    //    var min = t.$("#dateFrom").val();
-    //    min = moment(min, "dddd, D MMMM YYYY");
-    //    //console.log(t.$('#pickerTimeFrom').data('DateTimePicker').minDate())
-    //
-    //
-    //}
 });
