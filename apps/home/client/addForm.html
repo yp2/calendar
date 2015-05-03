@@ -1,0 +1,51 @@
+<template name="addForm">
+    <form role="form" id="addEventForm">
+
+        <div class="form-group">
+            <label for="name">Nazwa</label>
+            <input required="" type="text" class="form-control" name="name"
+                   id="name"
+                   placeholder="Nazwa">
+
+            <p class="help-block" style="display: none "></p>
+        </div>
+        <div class="form-group">
+            <label for="timeFrom">Czas od</label>
+
+            <div class='input-group date' id='pickerTimeFrom'>
+                <input required="" type='text' class="form-control" id="timeFrom"
+                       placeholder="Czas od"/>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-clock-o"></i>
+                                        </span>
+            </div>
+            <p id="help-block-time" class="help-block" style="display: none "></p>
+
+        </div>
+        <div class="form-group">
+            <label for="dateFrom">Data od</label>
+
+            <div class='input-group date' id='pickerDateFrom'>
+                <input type='text' class="form-control" id="dateFrom"
+                       placeholder="Data od"/>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="duration">Czas trwania</label>
+            <select name="duration" id="duration" class="form-control">
+                <option value=""> -- Select One --</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="type">Typ</label>
+            <select name="type" id="type" class="form-control">
+                <option value=""> -- Select One --</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary" id="createEvent">Utwórz
+        </button>
+    </form>
+</template>
