@@ -19,6 +19,7 @@ Events.allow({
     },
     remove: function(userId, doc) {
         if (userId === doc.user._id){
+            console.log(userId);
             return userId;
         }
     }

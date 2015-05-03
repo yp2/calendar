@@ -27,5 +27,19 @@ Template.eventsPlaned.helpers({
 });
 
 Template.eventsPlaned.events({
+    "click .data-delete": function (e, t) {
+        e.preventDefault();
+        var id = t.$(".data-delete").attr('data-id');
+            var result = Events.remove({_id: id});
+        //if(confirm("Czy chesz usunąć zadanie ?")){
+        //    if (result === 1) {
+        //        Alerts.add("Zadanie zostało usunięta", "success");
+        //
+        //    } else {
+        //        Alerts.add("Zadanie nie mogło zostać usunięte", "danger")
+        //    }
+        //
+        //}
 
+    }
 });

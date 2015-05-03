@@ -106,17 +106,61 @@ Template.home.events({
     "click #createEvent" : function (e, t){
         e.preventDefault();
         // form data
-        var formData = {
-            name: t.$("#name").val(),
-            date: parseDate(t.$("#dateFrom").val()),
-            time: parseTime(t.$("#timeFrom").val()),
-            user: {_id: Meteor.userId()}
-        };
-        var eventId = Events.insert(formData);
-        if (eventId) {
-            Alerts.add("Zadanie zostało dodane", "success", {})
+
+        var hasErrors = [];
+
+        var name = t.$("#name").val();
+        var date = t.$("#dateFrom").val();
+        var time = t.$("#timeFrom").val();
+
+        console.log();
+        var fgDivName = t.$("div.form-group:has(#name)");
+        var helpTextName = t.$('#name~p.help-block');
+        var fgDivTime = t.$("div.form-group:has(#timeFrom)");
+        //var helpTextTime = t.$('#timeFrom~p.help-block');
+        var helpTextTime = t.$('#help-block-time');
+
+        if (name.length == 0) {
+            fgDivName.addClass('has-error');
+            helpTextName.html("Pole nie może być puste");
+            helpTextName.css('display', 'inherit' );
+            hasErrors.push('name');
         } else {
-            Alerts.add("Zadanie nie zostało dodane", "danger")
+            fgDivName.removeClass('has-error');
+            helpTextName.html("");
+            helpTextName.css('display', 'none');
+            _.without(hasErrors, 'name')
         }
+
+        if (time.length == 0){
+            fgDivTime.addClass('has-error');
+            helpTextTime.html("Pole nie może być puste");
+            helpTextTime.css('display', 'inherit' );
+            hasErrors.push('time');
+        } else {
+            fgDivTime.removeClass('has-error');
+            helpTextTime.html("");
+            helpTextTime.css('display', 'none');
+            _.without(hasErrors, 'time')
+        }
+
+        if (hasErrors.length == 0) {
+            console.log('nie ma');
+            var formData = {
+                name: name,
+                date: parseDate(date),
+                time: parseTime(time),
+                user: {_id: Meteor.userId()}
+            };
+            var eventId = Events.insert(formData);
+            if (eventId) {
+                Alerts.add("Zadanie zostało dodane", "success", {});
+                document.getElementById("addEventForm").reset();
+            } else {
+                Alerts.add("Zadanie nie zostało dodane", "danger")
+            }
+        }
+
+
     }
 });
