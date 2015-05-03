@@ -30,22 +30,33 @@
     <div class="row">
         <div class="col-md-9">
             <div class="row">
-                <div class="col-md-7">
-                    <div class="well well-lg">
-                        {{# each eventsForDay }}
-                            {{ name }}
-                        {{/ each }}
+                <div class="col-md-6">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            Zaplanowane na:
+                            {{# if checkToday calNavCurrent }}
+                                <strong>dziś</strong>.
+                            {{else}}
+                                <strong>{{calNavCurrent}}</strong>
+                            {{/if}}
+                        </div>
+                        <div class="panel-body">
+                            {{# each eventsForDay }}
+                                {{> eventsPlaned event=this }}
+                            {{/ each }}
+                        </div>
                     </div>
-
                 </div>
-                <div class="col-md-5">
-                    <div class="well well-lg">
-                        <div class="list-group">
+                <div class="col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Planowane</div>
+                        <div class="panel-body">
                             {{# each eventsWoDay }}
                                 {{> eventsPlaned event=this }}
                             {{/ each}}
                         </div>
                     </div>
+
 
                 </div>
             </div>

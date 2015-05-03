@@ -23,6 +23,15 @@ Template.eventsPlaned.helpers({
     makeId: function (cls) {
         var data = Template.currentData();
         return cls + data.event._id
+    },
+    eventColor: function (event) {
+        var cls = 'list-group-item-danger';
+        if (event.type.type === 'mine') {
+            cls = 'list-group-item-success';
+        } else if (event.type.type === 'planExtra') {
+            cls = 'list-group-item-info'
+        }
+        return cls;
     }
 });
 
@@ -30,16 +39,15 @@ Template.eventsPlaned.events({
     "click .data-delete": function (e, t) {
         e.preventDefault();
         var id = t.$(".data-delete").attr('data-id');
+        if(confirm("Czy chesz usunąć zadanie ?")){
             var result = Events.remove({_id: id});
-        //if(confirm("Czy chesz usunąć zadanie ?")){
-        //    if (result === 1) {
-        //        Alerts.add("Zadanie zostało usunięta", "success");
-        //
-        //    } else {
-        //        Alerts.add("Zadanie nie mogło zostać usunięte", "danger")
-        //    }
-        //
-        //}
+            if (result === 1) {
+                Alerts.add("Zadanie zostało usunięta", "success");
+            } else {
+                Alerts.add("Zadanie nie mogło zostać usunięte", "danger")
+            }
+
+        }
 
     }
 });

@@ -1,3 +1,30 @@
+Template.addForm.helpers({
+    hourOptions: function () {
+        var options = [];
+        var showDate = Session.get('selectedDate') ? Session.get('selectedDate') : moment().format(CONF.dsFormat) ;
+        var today = moment().format(CONF.dsFormat);
+        var selectedHour = Session.get('selectedHour');
+        var fromHour;
+        var h;
+
+        if (showDate !== today) {
+            fromHour = 0;
+
+        } else {
+            fromHour = moment().format("H")
+        }
+        selectedHour ? h = selectedHour :  h = fromHour;
+        h = 24 - h;
+        for (var i = 1; i <= h; i++){
+            options.push({value:i, option:i})
+        }
+        return options;
+    },
+    typeOptions: function () {
+        return CONF.eventTypes;
+    }
+});
+
 Template.addForm.onRendered(function () {
     var today = moment();
     this.$('#pickerDateFrom').datetimepicker({
@@ -8,7 +35,7 @@ Template.addForm.onRendered(function () {
     this.$('#pickerTimeFrom').datetimepicker({
         locale: "pl",
         format: CONF.tFormat,
-        minDate: today,
+        //minDate: today,
         maxDate: moment({hour: 23, minute: 59})
     });
 
@@ -29,6 +56,14 @@ Template.addForm.onRendered(function () {
             }
         }
     });
+
+    this.$('#pickerTimeFrom').on('dp.change', function (e) {
+        var hour = e.date.format("H");
+        var selectedDate = e.date.format(CONF.dsFormat);
+
+        Session.set('selectedHour', hour);
+        Session.set('selectedDate', selectedDate)
+    })
 });
 
 Template.addForm.events({
@@ -41,6 +76,12 @@ Template.addForm.events({
         var name = t.$("#name").val();
         var date = t.$("#dateFrom").val();
         var time = t.$("#timeFrom").val();
+        var duration = t.$("#duration").val();
+        var eventType = t.$("#type").val();
+        var type = {
+            type: eventType,
+            name: _.findWhere(CONF.eventTypes, {value: eventType}).option
+        };
 
         console.log();
         var fgDivName = t.$("div.form-group:has(#name)");
@@ -74,17 +115,22 @@ Template.addForm.events({
         }
 
         if (hasErrors.length == 0) {
-            console.log('nie ma');
             var formData = {
                 name: name,
                 date: parseDate(date),
                 time: parseTime(time),
-                user: {_id: Meteor.userId()}
+                toTime: parseTime(time) + parseInt(duration),
+                user: {_id: Meteor.userId()},
+                duration: duration,
+                type: type
             };
             var eventId = Events.insert(formData);
             if (eventId) {
                 Alerts.add("Zadanie zostało dodane", "success", {});
                 document.getElementById("addEventForm").reset();
+                t.$('#pickerTimeFrom').data("DateTimePicker").minDate(moment({hour: 0, minute: 0}));
+                t.$('#pickerDateFrom').data("DateTimePicker").minDate(moment());
+
             } else {
                 Alerts.add("Zadanie nie zostało dodane", "danger")
             }
