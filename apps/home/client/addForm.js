@@ -126,13 +126,14 @@ Template.addForm.events({
             };
             var eventId = Events.insert(formData);
             if (eventId) {
-                Alerts.add("Zadanie zostało dodane", "success", {});
+                sAlert.success("Zadanie zostało dodane");
+                //Alerts.add("Zadanie zostało dodane", "success", {});
                 document.getElementById("addEventForm").reset();
                 t.$('#pickerTimeFrom').data("DateTimePicker").minDate(moment({hour: 0, minute: 0}));
                 t.$('#pickerDateFrom').data("DateTimePicker").minDate(moment());
 
             } else {
-                Alerts.add("Zadanie nie zostało dodane", "danger")
+                sAlert.error("Zadanie nie zostało dodane")
             }
         }
     }

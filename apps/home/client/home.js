@@ -1,4 +1,4 @@
-if (! Session.get('showDate')){
+if (!Session.get('showDate')) {
     var today = moment();
     console.log(today.format(CONF.dsFormat));
     Session.set('showDate', today.format(CONF.dsFormat))
@@ -32,43 +32,60 @@ Template.home.helpers({
         date = moment(date, CONF.dFormat).format(CONF.dFormat);
         return today === date
     },
-    eventsForDay : function () {
+    eventsForDay: function () {
         var day = Session.get('showDate');
         return Events.find({date: day}, {sort: {time: 1}})
     },
-    eventsWoDay : function () {
+    eventsWoDay: function () {
         //console.log(Events.find({date: null}).fetch());
         return Events.find({date: null}, {sort: {time: 1}})
     }
 });
 
-Template.home.onRendered(function(){
+Template.home.onRendered(function () {
     var calNavPicker = this.$(".calNavPicker").datepicker({
         language: "pl",
         todayHighlight: true
     });
 
-    calNavPicker.on("changeDate", function(e){
+    calNavPicker.on("changeDate", function (e) {
         var selectedDate = moment(e.date);
         Session.set('showDate', selectedDate.format(CONF.dsFormat));
         $(".calNavPicker").datepicker("hide");
-    })
+    });
+
+    var dropPanel = $('#panel-planed-events');
+
+    function handleDragEnter(e) {
+        // this / e.target is the current hover target.
+        this.classList.add('over');
+    }
+
+    function handleDragOver(e) {
+        console.log('handle drag over');
+        if (e.preventDefault) {
+            e.preventDefault(); // Necessary. Allows us to drop.
+        }
+        return false;
+    }
+    dropPanel.on('dragover', handleDragOver);
+    dropPanel.on('dragenter', handleDragEnter);
 });
 
 Template.home.events({
-    'click .calNavPrev' : function (e){
+    'click .calNavPrev': function (e) {
         e.preventDefault();
         var currentDate = moment(Session.get('showDate'), CONF.dsFormat);
         var date = currentDate.subtract(1, 'days');
         Session.set('showDate', date.format(CONF.dsFormat));
     },
-    'click .calNavNext' : function (e){
+    'click .calNavNext': function (e) {
         e.preventDefault();
         var currentDate = moment(Session.get('showDate'), CONF.dsFormat);
         var date = currentDate.add(1, 'days');
         Session.set('showDate', date.format(CONF.dsFormat));
     },
-    "click .calNavCurrent" : function (e) {
+    "click .calNavCurrent": function (e) {
         e.preventDefault();
         Session.set('showDate', moment().format(CONF.dsFormat))
     }

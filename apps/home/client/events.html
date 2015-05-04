@@ -1,5 +1,5 @@
 <template name="eventsPlaned">
-    <li class="list-group-item eventsItem {{eventColor event}}" draggable="true">
+    <li class="list-group-item eventsItem {{eventColor event}}" draggable="true" id="{{event._id}}">
         <span class="pull-right"><a href="" data-id="{{makeId ''}}" class="data-delete"><i
                 class="fa fa-times"></i></a></span>
             <h4 class="list-group-item-heading">{{event.name}}</h4>
