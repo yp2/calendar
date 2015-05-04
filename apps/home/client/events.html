@@ -6,7 +6,11 @@
             <!--<span class="label label-default">{{event.type.name}}</span>-->
 
             <p class="list-group-item-text">
+                {{#if event.date }}
+                    Na dzień: <strong>{{eventDate event}}</strong><br />
+                {{/if}}
                 Czas od: <strong>{{event.time}}:00</strong> do: <strong>{{event.toTime}}:00</strong>
+
                 <span class="pull-right"><a href="" id="{{makeId "showMore"}}"><i
                         class="fa fa-angle-down fa-2x"></i></a></span>
             </p>

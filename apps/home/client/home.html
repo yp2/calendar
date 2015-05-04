@@ -31,7 +31,7 @@
         <div class="col-md-9">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="panel panel-warning">
+                    <div class="panel panel-warning" id="panel-planed-events">
                         <div class="panel-heading">
                             Zaplanowane na:
                             {{# if checkToday calNavCurrent }}
@@ -40,7 +40,7 @@
                                 <strong>{{calNavCurrent}}</strong>
                             {{/if}}
                         </div>
-                        <div class="panel-body" id="panel-planed-events">
+                        <div class="panel-body" id="drop-panel-planed-events">
                             {{# each eventsForDay }}
                                 {{> eventsPlaned event=this }}
                             {{/ each }}
@@ -48,9 +48,9 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="panel panel-primary">
+                    <div class="panel panel-primary" id="panel-to-plan">
                         <div class="panel-heading">Planowane</div>
-                        <div class="panel-body">
+                        <div class="panel-body" id="drop-panel-to-plan">
                             {{# each eventsWoDay }}
                                 {{> eventsPlaned event=this }}
                             {{/ each}}

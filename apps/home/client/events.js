@@ -18,24 +18,23 @@ Template.eventsPlaned.onRendered(function () {
             }
         });
         var handleDragStart = function (e) {
-            console.log('handle drag start');
+            var id = self.data.event._id;
+            Session.set('draged', id);
         };
-
-
-
-
-
-        //console.log($('#panel-planed-events'));
 
         var event = $('#' + self.data.event._id);
 
+        function handleDragEnd(e) {
+
+            $('#panel-planed-events').removeClass('over');
+            $('#panel-to-plan').removeClass('over');
+            Session.set('draged', null);
+        }
+
         event.on('dragstart', handleDragStart);
-
-
-
+        event.on('dragend', handleDragEnd);
     }
-)
-;
+);
 
 Template.eventsPlaned.helpers({
     makeId: function (cls) {
@@ -50,6 +49,9 @@ Template.eventsPlaned.helpers({
             cls = 'list-group-item-info'
         }
         return cls;
+    },
+    eventDate: function (event) {
+        return moment(event.date, CONF.dsFormat).format(CONF.dFormat);
     }
 });
 
