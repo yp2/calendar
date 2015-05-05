@@ -12,39 +12,6 @@ Template.home.onCreated(function () {
 
 });
 
-function checkEvents (date, event) {
-    var eventDuration = [];
-    var otherDuration = [];
-    var otherEvents = Events.find({date: date}).fetch();
-    var result = true;
-
-    for (var i = 0; i < event.duration; i++){
-        eventDuration.push(event.time + i)
-    }
-
-    for(var y = 0; y < otherEvents.length; y ++){
-        var otherEvent = otherEvents[y];
-        for (var x = 0; x < otherEvent.duration; x ++) {
-            otherDuration.push(otherEvent.time + x)
-        }
-    }
-
-    if (_.intersection(eventDuration, otherDuration).length !== 0) {
-        result = false
-    }
-    return result
-}
-
-function checkCurrentDate(event) {
-    var today = moment();
-    var showDate = Session.get('showDate');
-    var result = true;
-    if (showDate == today.format(CONF.dsFormat) && event.time < parseInt(today.format('H'))) {
-        result = false
-    }
-    return result
-}
-
 Template.home.helpers({
     calNavCurrent: function () {
         var date = moment(Session.get('showDate'), CONF.dsFormat);
@@ -138,21 +105,26 @@ Template.home.onRendered(function () {
         return false;
     }
 
-
     function handleDropToPlan(e) {
         if (e.stopPropagation) {
             e.stopPropagation();
         }
         var id = Session.get('draged');
+        var checkDate = checkCurrentDate(Events.findOne({_id:id}));
 
-        Events.update({_id: id}, {$set: {date: null}});
+        if (checkDate) {
+            Events.update({_id: id}, {$set: {date: null}});
+            sAlert.success("Zadanie przeniesione do planowanych")
+        } else {
+            sAlert.error("Zadanie przesłe - nie można przenieś do planowanych")
+        }
 
         Session.set('draged', null);
 
         $('#panel-to-plan').removeClass('over');
         $('#panel-planed-events').removeClass('over');
 
-        return falsse;
+        return false;
     }
     
     dropPlan.on('drop', handleDropToPlan);

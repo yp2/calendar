@@ -51,7 +51,7 @@ Template.addForm.onRendered(function () {
         } else {
             pickerTimeFrom.data("DateTimePicker").maxDate(moment({hour: 23, minute: 59}));
             pickerTimeFrom.data("DateTimePicker").minDate(moment());
-            if (timeFrom.val()) {
+            if (timeFrom.val() && parseInt(timeFrom.val()) < moment().format('H')) {
                 pickerTimeFrom.data("DateTimePicker").date(moment());
             }
         }
@@ -69,7 +69,6 @@ Template.addForm.onRendered(function () {
 Template.addForm.events({
     "click #createEvent" : function (e, t){
         e.preventDefault();
-        // form data
 
         var hasErrors = [];
 
@@ -124,16 +123,44 @@ Template.addForm.events({
                 duration: duration,
                 type: type
             };
-            var eventId = Events.insert(formData);
-            if (eventId) {
-                sAlert.success("Zadanie zostało dodane");
-                //Alerts.add("Zadanie zostało dodane", "success", {});
-                document.getElementById("addEventForm").reset();
-                t.$('#pickerTimeFrom').data("DateTimePicker").minDate(moment({hour: 0, minute: 0}));
-                t.$('#pickerDateFrom').data("DateTimePicker").minDate(moment());
 
+            var addEvent = false;
+
+            if(date.length != 0) {
+                // dodajemy zadanie z datą
+                var fakeEvent = {
+                    time: parseTime(time),
+                    duration: duration
+                };
+                var chEvents = checkEvents(parseDate(date), fakeEvent);
+                var chDate = checkCurrentDate(fakeEvent);
+                if (chEvents) {
+                    if (chDate) {
+                        addEvent = true;
+                    } else {
+                        sAlert.error("Przeszłe zadanie - nie można zaplanować");
+                    }
+                } else {
+                    sAlert.error("Zadanie nie zostało zaplanowane - zadania nachodzą się")
+                }
             } else {
-                sAlert.error("Zadanie nie zostało dodane")
+                // dodajemy zadanie bez daty
+                addEvent = true;
+            }
+
+            if (addEvent) {
+                var eventId = Events.insert(formData);
+                if (eventId) {
+                    sAlert.success("Zadanie zostało dodane");
+                    document.getElementById("addEventForm").reset();
+                    t.$('#pickerTimeFrom').data("DateTimePicker").minDate(moment({
+                        hour: 0,
+                        minute: 0
+                    }));
+                    t.$('#pickerDateFrom').data("DateTimePicker").minDate(moment());
+                } else {
+                    sAlert.error("Zadanie nie zostało dodane")
+                }
             }
         }
     }

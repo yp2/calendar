@@ -4,7 +4,3 @@ Template.layout.helpers({
     }
 
 });
-
-//Alerts.defaultOptions.autoHide = true;
-//Alerts.defaultOptions.alertsLimit = 1;
-//Alerts.defaultOptions.fadeOut = 2000;
